@@ -6,3 +6,6 @@ Script will
 - create GPO reports
 - csv report will all GP links and other very usefull informations
 - WMI backup / export to txt file 
+- keep the backups for rentetion period (default 10)
+
+Recommendation is to schedule the task to run the script regularly directly on domain controllers as SYSTEM account. 

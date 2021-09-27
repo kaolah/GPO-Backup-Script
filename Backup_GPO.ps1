@@ -1,5 +1,4 @@
-############################
-#SCRIPT TO BACKUP GPO, GPO REPORTS 
+#SCRIPT TO BACKUP GPO, GPO REPORTS, WMI Filters
 
 # Variables that needs to be changed
 
@@ -14,7 +13,6 @@ $RootWMIFolder = "C:\Backup\GPO\WMI\"
 Import-Module GroupPolicy
 Import-Module ActiveDirectory
 
-############################
 # BACKUP CURRENT GPOs and GENERATE REPORTS 
 
 If (!(Test-path C:\Backup\GPO\GPOBackups)) {
@@ -52,7 +50,7 @@ foreach ($gpo in $allGPOs) {
     }
 
 
-#####################
+
 # BACKUP WMI FILTERS -- XML file
 #Connect to the Active Directory to get details of the WMI filters
     $WmiFilters = Get-ADObject -Filter 'objectClass -eq "msWMI-Som"' `
@@ -75,7 +73,7 @@ foreach ($gpo in $allGPOs) {
 # BACKUP WMI FILTERS -- TXT file
 get-adobject –LDAPFilter "(ObjectClass=msWMI-som)" -properties * | Sort-Object msWMI-Name | Select @{Name="Name";Expression= {$_.'msWMI-Name'}}, @{Name="GUID";Expression={$_.Name}}, @{Name="Description";Expression={$_.'msWMI-Parm1'}}, @{Name="Namespace";Expression={$_.'msWMI-Parm2'.Split(";")[-3] }}, @{Name="WMIQuery";Expression={$_.'msWMI-Parm2'.Split(";")[-2] }}, Created,Modified | Out-File $WMIFolder\WmiFilters.txt
 
-##########################################################
+
 # REPORT to CSV
 
 # Grab a list of all GPOs
@@ -182,7 +180,6 @@ $report |
  Export-CSV $ReportFolder\___gPLink_Report.csv -NoTypeInformation -Encoding UTF8
 
 
-############################
 # REMOVE BACKUPS OLDER THAN $RetentionPeriod
 
 Get-ChildItem -path $RootBackupFolder -Directory | Sort-Object -Property Name -Descending | Select-Object -Skip $RetentionPeriod |
@@ -198,6 +195,4 @@ Get-ChildItem -path $RootReportFolder -Directory | Sort-Object -Property Name -D
 Get-ChildItem -path $RootWMIFolder -Directory | Sort-Object -Property Name -Descending | Select-Object -Skip $RetentionPeriod | 
 	ForEach-Object { remove-item $_.fullname -recurse -force }
 
-
-#######################################################
 #END OF BACKUP SCRIPT

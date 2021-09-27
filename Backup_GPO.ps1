@@ -3,7 +3,7 @@
 
 # Variables that needs to be changed
 
-$Server = "dc2"
+$Server = "dc1"
 $Domain = "ko.local"
 $ServerFQDN = "$Server.$Domain"
 $RetentionPeriod = "10"

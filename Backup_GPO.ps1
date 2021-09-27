@@ -93,19 +93,19 @@ $gPLinks = @()
 # GPOs linked to the root of the domain
 #  !!! Get-ADDomain does not return the gPLink attribute
 $gPLinks += `
- Get-ADObject -Identity (Get-ADDomain).distinguishedName -Properties name, distinguishedName, gPLink, gPOptions |
+ Get-ADObject -Identity (Get-ADDomain).distinguishedName -Server $ServerFQDN -Properties name, distinguishedName, gPLink, gPOptions |
  Select-Object name, distinguishedName, gPLink, gPOptions, @{name='Depth';expression={0}}
 
 # GPOs linked to OUs
 #  !!! Get-GPO does not return the gPLink attribute
 # Calculate OU depth for graphical representation in final report
 $gPLinks += `
- Get-ADOrganizationalUnit -Filter * -Properties name, distinguishedName, gPLink, gPOptions |
+ Get-ADOrganizationalUnit -Filter * -Server $ServerFQDN -Properties name, distinguishedName, gPLink, gPOptions |
  Select-Object name, distinguishedName, gPLink, gPOptions, @{name='Depth';expression={($_.distinguishedName -split 'OU=').count - 1}}
 
 # GPOs linked to sites
 $gPLinks += `
- Get-ADObject -LDAPFilter '(objectClass=site)' -SearchBase "CN=Sites,$((Get-ADRootDSE).configurationNamingContext)" -SearchScope OneLevel -Properties name, distinguishedName, gPLink, gPOptions |
+ Get-ADObject -LDAPFilter '(objectClass=site)' -SearchBase "CN=Sites,$((Get-ADRootDSE).configurationNamingContext)" -SearchScope OneLevel -Server $ServerFQDN -Properties name, distinguishedName, gPLink, gPOptions |
  Select-Object name, distinguishedName, gPLink, gPOptions, @{name='Depth';expression={0}}
 
 # Empty report array

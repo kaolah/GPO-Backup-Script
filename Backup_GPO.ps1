@@ -1,4 +1,4 @@
-#SCRIPT TO BACKUP GPO, GPO REPORTS, WMI Filters - test comit
+#SCRIPT TO BACKUP GPO, GPO REPORTS, WMI Filters 
 
 # Variables that needs to be changed
 

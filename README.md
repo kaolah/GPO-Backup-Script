@@ -9,3 +9,5 @@ Script will
 - keep the backups for rentetion period (default 10)
 
 Recommendation is to schedule the task to run the script regularly directly on domain controllers as SYSTEM account. 
+
+<a href="https://www.w3schools.com/">Visit W3Schools.com!</a>
